@@ -38,7 +38,17 @@ h1 em,h2 em { color:var(--orange); font-weight:450; }
 .hero-facts p { margin:0; font-size:12px; color:#c9cec4; display:flex; align-items:center; gap:9px; }
 .fact-icon { color:var(--lime); font-size:18px; }
 .hero-mark { position:relative; z-index:2; display:flex; align-items:center; justify-content:center; }
-.hero-mark img { width:min(37vw,470px); aspect-ratio:1; object-fit:cover; border-radius:50%; position:relative; z-index:2; box-shadow:0 28px 90px rgba(0,0,0,.45); }
+.hero-mark img {
+  display: block;
+  width: min(37vw, 470px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, .45);
+}
 .logo-halo { position:absolute; width:min(43vw,550px); aspect-ratio:1; border-radius:50%; border:1px solid rgba(201,229,0,.28); box-shadow:0 0 0 26px rgba(201,229,0,.025),0 0 0 58px rgba(201,229,0,.02); }
 .stamp { position:absolute; z-index:3; width:76px; height:76px; border-radius:50%; background:var(--lime); color:var(--ink); display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:16px; font-weight:900; transform:rotate(-9deg); box-shadow:0 10px 24px rgba(0,0,0,.3); }
 .stamp small { font-size:8px; letter-spacing:.14em; }
@@ -68,7 +78,16 @@ h1 em,h2 em { color:var(--orange); font-weight:450; }
 .about { display:grid; grid-template-columns:.9fr 1.1fr; min-height:740px; background:#eef4df; }
 .about-visual { position:relative; background:var(--ink); display:flex; align-items:center; justify-content:center; overflow:hidden; }
 .about-visual::before { content:""; width:560px; height:560px; position:absolute; border:1px solid rgba(201,229,0,.28); border-radius:50%; box-shadow:0 0 0 45px rgba(201,229,0,.03),0 0 0 90px rgba(201,229,0,.02); }
-.about-visual img { width:min(73%,430px); border-radius:50%; position:relative; z-index:2; }
+.about-visual img {
+  display: block;
+  width: min(73%, 430px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
 .leaf { color:var(--lime); position:absolute; font-size:30px; }
 .leaf-one { top:15%; left:16%; }.leaf-two { bottom:17%; right:14%; color:var(--orange); }
 .about-copy { padding:95px clamp(32px,6vw,96px); align-self:center; }
