@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import productCategories from "./products.json";
 
 type Language = "de" | "en";
 
@@ -16,16 +17,9 @@ const copy = {
     whatsapp: "Per WhatsApp bestellen", call: "Jetzt anrufen",
     open: "Mo–Sa · 08:00–20:00 Uhr", delivery: "Kostenlose Lieferung ab 15 € im Umkreis von 1 km",
     strip: ["Frisches Obst & Gemüse", "Gewürze", "Reis & Trockenwaren", "Bio-Produkte", "Asiatische Spezialitäten"],
-    sectionEyebrow: "Unser Sortiment", sectionTitle: "Alles für Ihre asiatische Küche",
-    sectionText: "Von Grundzutaten für den Alltag bis zu besonderen Aromen aus der Heimat. Unser Sortiment wächst laufend.",
-    categories: [
-      ["Obst & Gemüse", "Frisch importierte und saisonale Auswahl aus Asien."],
-      ["Gewürze & Kräuter", "Ganze Gewürze, Mischungen, Pasten und frische Kräuter."],
-      ["Reis & Trockenwaren", "Reis, Linsen, Mehl, Nudeln und Vorratsprodukte."],
-      ["Bio-Produkte", "Ausgewählte Bio-Lebensmittel und natürliche Zutaten."],
-      ["Snacks & Getränke", "Beliebte süße, herzhafte und erfrischende Produkte."],
-      ["Fisch auf Vorbestellung", "Frischer Fisch nach Verfügbarkeit und Vorbestellung."],
-    ],
+    sectionEyebrow: "Unser Sortiment", sectionTitle: "Produkte & Preise",
+    sectionText: "Öffnen Sie eine Kategorie, um unsere aktuelle Auswahl zu sehen. Ein Preis erscheint nur, wenn er in unserer Preisliste bestätigt ist.",
+    productsLabel: "Produkte",
     deliveryEyebrow: "Sri Asia Lieferservice", deliveryTitle: "Ihre Bestellung kommt zu Ihnen.",
     deliveryText: "Bestellen Sie bequem per WhatsApp. Ab 15 € liefern wir innerhalb von 1 km kostenlos, je nach Bestellzeit und Verfügbarkeit am selben oder nächsten Tag.",
     steps: ["Produkte per WhatsApp senden", "Bestellung bestätigen", "Lieferung erhalten"], order: "Bestellung starten",
@@ -49,16 +43,9 @@ const copy = {
     whatsapp: "Order via WhatsApp", call: "Call us", open: "Mon–Sat · 8:00 am–8:00 pm",
     delivery: "Free delivery from €15 within 1 km",
     strip: ["Fresh fruit & vegetables", "Spices", "Rice & dry foods", "Organic products", "Asian specialities"],
-    sectionEyebrow: "Our selection", sectionTitle: "Everything for your Asian kitchen",
-    sectionText: "From daily essentials to distinctive flavours from home. Our selection keeps growing.",
-    categories: [
-      ["Fruit & vegetables", "Fresh imported and seasonal produce from Asia."],
-      ["Spices & herbs", "Whole spices, blends, pastes and fresh herbs."],
-      ["Rice & dry foods", "Rice, lentils, flour, noodles and pantry essentials."],
-      ["Organic products", "Selected organic foods and natural ingredients."],
-      ["Snacks & drinks", "Popular sweet, savoury and refreshing products."],
-      ["Fish by pre-order", "Fresh fish subject to availability and pre-order."],
-    ],
+    sectionEyebrow: "Our selection", sectionTitle: "Products & prices",
+    sectionText: "Open a category to view our current selection. A price appears only after confirmation in our price list.",
+    productsLabel: "products",
     deliveryEyebrow: "Sri Asia delivery", deliveryTitle: "Your groceries, delivered.",
     deliveryText: "Send your order through WhatsApp. Orders from €15 receive free delivery within 1 km, on the same or next day depending on order time and availability.",
     steps: ["Send your list on WhatsApp", "Confirm your order", "Receive your delivery"], order: "Start an order",
@@ -77,12 +64,28 @@ const copy = {
   },
 } as const;
 
-const categoryIcons = ["🥬", "✦", "◉", "↟", "◌", "≈"];
+const categoryNames = {
+  "Fruit & Vegetables": { de: "Obst & Gemüse", en: "Fruit & vegetables" },
+  "Spices & Herbs": { de: "Gewürze & Kräuter", en: "Spices & herbs" },
+  Rice: { de: "Reis", en: "Rice" },
+  "Lentils Beans Grains": { de: "Linsen, Bohnen & Getreide", en: "Lentils, beans & grains" },
+  "Packaged Foods": { de: "Verpackte Lebensmittel", en: "Packaged foods" },
+  "Sauces & Preserved": { de: "Saucen, Konserven & Eingelegtes", en: "Sauces, canned & preserved foods" },
+  "Snacks & Sweets": { de: "Snacks & Süßwaren", en: "Snacks & sweets" },
+  Drinks: { de: "Getränke", en: "Drinks" },
+  "Home & Kitchen": { de: "Haushalt & Küche", en: "Home & kitchen" },
+} as const;
+
 const whatsapp = "https://wa.me/4915204880532?text=Hallo%20Sri%20Asia%2C%20ich%20möchte%20gerne%20bestellen.";
+const totalProducts = productCategories.reduce((total, category) => total + category.items.length, 0);
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>("de");
   const t = copy[language];
+  const priceFormatter = new Intl.NumberFormat(language === "de" ? "de-DE" : "en-DE", {
+    style: "currency",
+    currency: "EUR",
+  });
 
   useEffect(() => { document.documentElement.lang = language; }, [language]);
 
@@ -130,14 +133,34 @@ export default function Home() {
       </div>
 
       <section className="products" id="sortiment">
-        <div className="section-heading"><p className="eyebrow">{t.sectionEyebrow}</p><h2>{t.sectionTitle}</h2><p>{t.sectionText}</p></div>
-        <div className="category-grid">
-          {t.categories.map(([title, text], index) => (
-            <article className="category-card" key={title}>
-              <span className="category-number">0{index + 1}</span><div className="category-icon" aria-hidden="true">{categoryIcons[index]}</div>
-              <h3>{title}</h3><p>{text}</p>
-            </article>
-          ))}
+        <div className="section-heading section-heading-with-total">
+          <div><p className="eyebrow">{t.sectionEyebrow}</p><h2>{t.sectionTitle}</h2><p>{t.sectionText}</p></div>
+          <span className="catalog-total"><strong>{totalProducts}</strong>{t.productsLabel}</span>
+        </div>
+        <div className="category-accordion">
+          {productCategories.map((category, index) => {
+            const sourceName = category.sourceCategory as keyof typeof categoryNames;
+            const title = categoryNames[sourceName][language];
+
+            return (
+              <details className="category-menu" key={category.sourceCategory} open={index === 0}>
+                <summary>
+                  <span className="category-index">{String(index + 1).padStart(2, "0")}</span>
+                  <h3>{title}</h3>
+                  <span className="category-count">{category.items.length} {t.productsLabel}</span>
+                  <span className="category-toggle" aria-hidden="true" />
+                </summary>
+                <div className="product-list" role="list">
+                  {category.items.map((product) => (
+                    <div className="product-row" role="listitem" key={product.id}>
+                      <span>{product.name}</span>
+                      {typeof product.price === "number" && <strong>{priceFormatter.format(product.price)}</strong>}
+                    </div>
+                  ))}
+                </div>
+              </details>
+            );
+          })}
         </div>
       </section>
 
