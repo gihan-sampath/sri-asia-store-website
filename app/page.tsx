@@ -150,7 +150,7 @@ export default function Home() {
                   <span className="category-count">{category.items.length} {t.productsLabel}</span>
                   <span className="category-toggle" aria-hidden="true" />
                 </summary>
-                <div className="product-list" role="list">
+                <div className="product-list" role="list" tabIndex={0} aria-label={title}>
                   {category.items.map((product) => (
                     <div className="product-row" role="listitem" key={product.id}>
                       <span>{product.name}</span>
