@@ -13,7 +13,10 @@ export const metadata: Metadata = {
     locale: "de_DE",
     type: "website",
   },
-  other: { "codex-preview": "development" },
+  other: {
+    "codex-preview": "development",
+    "facebook-domain-verification": "xximhtrid9g6f78fi4l9xc2objarf6",
+  },
   icons: { icon: "/sri-asia-logo.webp", shortcut: "/sri-asia-logo.webp" },
 };
 
