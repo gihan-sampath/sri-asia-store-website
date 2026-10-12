@@ -15,7 +15,7 @@ The project uses Next.js and supports direct Vercel deployment. No environment v
 ## Store details
 
 - Address: Sieglitzhofer Straße 18, 91054 Erlangen
-- Opening hours: Monday to Saturday, 08:00 to 20:00
+- Opening hours: Monday to Saturday, 10:00 to 20:00
 - Phone and WhatsApp: +49 1520 4880532
 - Email: info@sri-asia.de
 
